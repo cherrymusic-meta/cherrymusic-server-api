@@ -16,7 +16,7 @@ FORMAT: 1A
 - [Group Settings](#group-settings)
 - [Group Stats](#group-stats)
 - [Group Download](#group-download)
-- [Group Action](#group-action)
+- [Group Tasks](#group-tasks)
 - [Group Lyrics](#group-lyrics)
 
 <!-- /MarkdownTOC -->
@@ -538,9 +538,9 @@ Statistics for people and other things.
 
 [TODO] &hellip;
 
-# Group Action
+# Group Tasks
 
-## Action [/actions]
+## Task [/tasks]
 
 Attributes:
 
@@ -556,8 +556,8 @@ Attributes:
 
         {
             "_id": "123",
-            "_cls": "Action",
-            "_url": "/actions/123",
+            "_cls": "Task",
+            "_url": "/tasks/123",
             "_created_at": "2069-12-31T00:00:00Z",
             "_modified_at": "2069-12-31T00:00:00Z",
             "status": "completed",
