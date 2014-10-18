@@ -1,11 +1,12 @@
 FORMAT: 1A
 
-<div style="position: fixed; top: 10px; left: 10px;" markdown="1">
-    
-# TOC
+# CherryMusic Server API
+
+<div style="display: none; position: fixed; top: 10px; left: 10px;" markdown="1">
+
+
 <!-- MarkdownTOC depth=1 autolink=true bracket=round -->
 
-- [CherryMusic Server API](#cherrymusic-server-api)
 - [Group Admin](#group-admin)
 - [Group User](#group-user)
 - [Group Media](#group-media)
@@ -23,8 +24,6 @@ FORMAT: 1A
 
 <!-- /MarkdownTOC -->
 </div>
-
-# CherryMusic Server API
 
 This is the **second draft spec** of the upcoming CherryMusic server API.
 (Here's the [first draft](restful-interface) for comparison.)
@@ -140,7 +139,7 @@ Attributes:
 ## POST /users/{name}/new_password
 
 + Parameters
-    + name (string, "angus") ... the username
+    + name (string, `angus`) ... the username
 
 + Request
 
@@ -246,7 +245,7 @@ Searching for text strings returns a Media group that contains matching groups a
 
 + Parameters
     + name (required, string, `foo songs`)
-    + owner (required, string, `angus`)
+    + user (required, string, `angus`)
 
 + Model
 
@@ -311,8 +310,17 @@ Searching for text strings returns a Media group that contains matching groups a
 
 ### GET
 
++ Response 200
+
+    [Playlists Collection][]
+
 ### POST
 
++ Request
+
+    [Playlist][]
+
++ Response 201
 
 
 # Group Art
@@ -408,7 +416,7 @@ Session management; login and logout.
         }
 
 
-### Quit a session (logout) [DELETE]
+### Quit a session [DELETE]
 
 + Response 204
 
@@ -420,9 +428,9 @@ Session management; login and logout.
     [Session][]
 
 
-## Session Collection
+## Session Collection [/sessions]
 
-### Establish a session (login) [POST]
+### Establish a session [POST]
 
 + Request (application/json)
 
@@ -461,15 +469,15 @@ Serverside storage for user-specific settings. Settings are simple key/value pai
 
 Statistics for people and other things.
 
-## Stats [/stats/{type}/{_id}]
+## Stats [/stats/{type}/{key}]
 
 + Parameters
-    + type (string, "users") ... what kind of thing are the stats for?
+    + type (string, `users`) ... what kind of thing are the stats for?
         + Values
             + `users`
             + `media`
             + `server`
-    + id (string, "angus") ... the id of the thing the stats are for
+    + key (string, `angus`) ... the id of the thing the stats are for
 
 + Model 
 
