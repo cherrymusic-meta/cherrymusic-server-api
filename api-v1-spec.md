@@ -3,14 +3,13 @@ FORMAT: 1A
 # CherryMusic Server API
 
 <div style="display: none; position: fixed; top: 10px; left: 10px;" markdown="1">
-
-
 <!-- MarkdownTOC depth=1 autolink=true bracket=round -->
 
+- [Group Media](#group-media)
+- [Group Search](#group-search)
+- [Search](#/search{?query})
 - [Group Admin](#group-admin)
 - [Group User](#group-user)
-- [Group Media](#group-media)
-- [Search](#/search{?query})
 - [Group Playlist](#group-playlist)
 - [Group Art](#group-art)
 - [Group Session](#group-session)
@@ -55,7 +54,7 @@ Sometimes, resources are embedded in other resources; for example, the `owner` o
 - `_modified_at`
 
 
-## Collection resources 
+## Collection resources
 
 Collection resources contain any number of sub-resources. As such, they do not have explicit `_id` and timestamp attributes. They do have `_cls` and `_url`, on the other hand.
 
@@ -75,9 +74,9 @@ Unless otherwise noted, all collection resources support the following query par
 
 ## Media Resources
 
-Media resources deal with playable media. They are either 
+Media resources deal with playable media. They are either
 
-- single, playable **tracks**, or 
+- single, playable **tracks**, or
 - **collections** which can contain any number of tracks and even child collections.
 
 For definitions and examples, see the section about the [/media resource](#group-media). Note, however, that other resources (like [search](#search)) can return collections as well.
@@ -88,69 +87,6 @@ Possible media collection types are:
 - `Compact`: super collection, groups together other collections when there are too many
 - `Playlist`: supports ownership and privacy, but can only contain tracks
 - `Search`: top level collection of search results
-
-# Group Admin
-
-The `admin` resource collection is a separate namespace which duplicates the other API resources. It allows special read and write access beyond the usual ownership constraints.
-
-Access is restricted to users with the `"admin"` role. 
-
-
-
-# Group User
-
-Resource representation of CherryMusic users.
-
-## User [/users/{name}]
-
-Attributes:
-
-- *_id*
-- *_url*
-- *name*
-- *roles\**
-- *stats\**
-
-*Italics* mean readonly, appended \* mean visibility is restricted to owners and admins.
-
-+ Model (application/json)
-
-        {
-            "_id": 1,
-            "_url": "/users/angus",
-            "name": "angus",
-            "roles": ["admin", "downloader"],
-            "stats": {
-                "_url": "/stats/users/angus",
-                "time_last_seen": "2014-10-05T07:15:00Z"
-            }
-        }
-        
-
-### GET
-
-+ Response 200
-
-    [User][]
-
-
-## POST /users/{name}/new_password
-
-+ Parameters
-    + name (string, `angus`) ... the username
-
-+ Request
-
-        {
-            "old_password": "12345",
-            "new_password": "54321"
-        }
-
-+ Response 201
-
-
-
-
 
 # Group Media
 
@@ -206,14 +142,21 @@ Track Attributes:
             ]
         }
 
+### GET
+
++ Response 200
+
+    [Media][]
 
 
-# Search [/search{?query}]
+# Group Search
 
 Searching for text strings returns a Media group that contains matching groups and single tracks.
 
+# Search [/search{?query}]
+
 + Parameters
-    + query (string, `shibboleth`) 
+    + query (string, `shibboleth`)
 
 + Model
 
@@ -237,12 +180,75 @@ Searching for text strings returns a Media group that contains matching groups a
     [Search][]
 
 
+# Group Admin
+
+The `admin` resource collection is a separate namespace which duplicates the other API resources. It allows special read and write access beyond the usual ownership constraints.
+
+Access is restricted to users with the `"admin"` role.
+
+
+# Group User
+
+Resource representation of CherryMusic users.
+
+## User [/users/{name}]
+
+Attributes:
+
+- *_id*
+- *_url*
+- *name*
+- *roles\**
+- *stats\**
+
++ Model (application/json)
+
+        {
+            "_id": 1,
+            "_url": "/users/angus",
+            "name": "angus",
+            "roles": ["admin", "downloader"],
+            "stats": {
+                "_url": "/stats/users/angus",
+                "time_last_seen": "2014-10-05T07:15:00Z"
+            }
+        }
+
+
+### Retrieve details [GET]
+
++ Response 200
+
+    [User][]
+
+
+## Change Password [/users/{name}/new_password]
+
+
++ Parameters
+    + name (string, `angus`) ... the username
+
+### POST
+
++ Request
+
+        {
+            "old_password": "12345",
+            "new_password": "54321"
+        }
+
++ Response 201
+
+
+
+
+
 # Group Playlist
 
 ## Playlist [/playlists/{name}/{user}]
 
 + Parameters
-    + name (required, string, `foo songs`)
+    + name (required, string, `foo+songs`)
     + user (required, string, `angus`)
 
 + Model
@@ -306,13 +312,13 @@ Searching for text strings returns a Media group that contains matching groups a
             "tracks": []
         }
 
-### GET
+### All playlists [GET]
 
 + Response 200
 
     [Playlists Collection][]
 
-### POST
+### Add new playlist [POST]
 
 + Request
 
@@ -333,7 +339,7 @@ Search and set media art.
         + values
             + `"amazon"`
             + `"bestbuy"`
-            + `"google"`  
+            + `"google"`
 
 ### GET
 
@@ -343,7 +349,7 @@ Search and set media art.
             "query": "abbey road",
             "source": "google",
             "urls": [
-                "http://example.com/img.png", 
+                "http://example.com/img.png",
                 "http://example.com/img2.jpeg"
             ]
         }
@@ -393,8 +399,8 @@ Session management; login and logout.
                 "resources": {
                     "audio": {"_url": "/audio"},
                     "transcoder": {
-                        "_url": "/trans", 
-                        "encoders": ["mp3"], 
+                        "_url": "/trans",
+                        "encoders": ["mp3"],
                         "decoders": ["mp3"]
                     }
                 }
@@ -414,12 +420,12 @@ Session management; login and logout.
         }
 
 
-### Quit a session [DELETE]
+### Quit a session: Logout [DELETE]
 
 + Response 204
 
 
-### GET
+### Get session data [GET]
 
 + Response 200
 
@@ -428,7 +434,7 @@ Session management; login and logout.
 
 ## Session Collection [/sessions]
 
-### Establish a session [POST]
+### Establish a session: Login [POST]
 
 + Request (application/json)
 
@@ -444,23 +450,64 @@ Session management; login and logout.
 
     [Session][]
 
+### List sessions [GET]
+
+[TODO] &hellip;
+
 
 
 # Group Settings
 
 Serverside storage for user-specific settings. Settings are simple key/value pairs which are also bound to a context, allowing different client apps to have their own settings namespace.
 
-## Settings [/settings/{context}/{user}]
+## User Settings [/settings/{context}/{user}]
 
 + Parameters
-    + context (string) ... `global` or client app UUID
-    + user (string) ... username
+    + context (string, `common`) ... `common` or client app UUID
+    + user (string, `angus`) ... username
 
-### GET
++ Model
 
-### POST
+```json
+{
+    "_id": "123",
+    "_cls": "Settings",
+    "_url": "/settings/common/angus",
+    "_context": "common",
+    "_owner": {
+        "_id": "1",
+        "_cls": "User",
+        "_url": "/users/angus",
+        "name": "angus"
+    },
+    "keys.prev": 89,
+    "kbs.play": 88,
+    "kbs.pause": 67,
+    "kbs.stop": 86,
+    "kbs.next": 66,
+    "kbs.search": 83
+}
+```
 
-### PATCH
+### Retrieve all settings [GET]
+
++ Response 200
+
+    [User Settings][]
+
+### Change single setting [PUT]
+
++ Request
+
+```json
+{
+    "keys.prev": 111
+}
+```
+
++ Response 200
+
+    [User Settings][]
 
 
 # Group Stats
@@ -477,7 +524,7 @@ Statistics for people and other things.
             + `server`
     + key (string, `angus`) ... the id of the thing the stats are for
 
-+ Model 
++ Model
 
         {
             "_url": "/stats/users/angus",
@@ -530,7 +577,7 @@ Attributes:
 
 Set and retrieve track lyrics.
 
-## Lyrics
+## Lyrics [/lyrics/for/{+path}]
 
 + Model
 
@@ -542,14 +589,20 @@ Set and retrieve track lyrics.
             "html": "<p>I'm strong to the finich<br/>Cause I eats me spinach<br />I'm Popeye, the Sailor Man!</p>"
         }
 
-### GET
+### Retrieve [GET]
 
-+Response 200
++ Response 200
 
     [Lyrics][]
 
-### PUT
+### Set [PUT]
 
-### DELETE
++ Request
 
+    [Lyrics][]
 
++ Response 200
+
+### Remove [DELETE]
+
++ Response 200
