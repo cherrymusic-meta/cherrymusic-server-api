@@ -2,11 +2,12 @@ FORMAT: 1A
 
 # CherryMusic Server API
 
+
 <div style="display: none; position: fixed; top: 10px; left: 10px;" markdown="1">
 <!-- MarkdownTOC depth=1 autolink=true bracket=round -->
 
-- [Group Media](#group-media)
-- [Group Search](#group-search)
+- [Group Browse Media](#group-browse-media)
+- [Group Search Media](#group-search-media)
 - [Search](#/search{?query})
 - [Group Admin](#group-admin)
 - [Group User](#group-user)
@@ -88,7 +89,9 @@ Possible media collection types are:
 - `Playlist`: supports ownership and privacy, but can only contain tracks
 - `Search`: top level collection of search results
 
-# Group Media
+<hr/>
+
+# Group Browse Media
 
 Browse the media collection in a directory-like structure.
 
@@ -113,10 +116,35 @@ Track Attributes:
 - length_ms (number)
 - start_ms = `0` (number)
 
-## Media [/media/{+path}]
+## Track [/media/{+filepath}]
 
 + Parameters
-    + path (string, `path/to/track.mp3`) ... sub-resources: URL-encoded directory and file names, joined by "/"
+    + filepath (string, `path/to/track.mp3`) ... path to playable audio file, relative to *basedir*
+
++ Model
+
+        {
+            "_id": "987",
+            "_cls": "Track",
+            "_url": "/media/path/to/track.mp3",
+            "name": "Track",
+            "path": "/path/to/track.mp3",
+            "format": "mp3",
+            "length_ms": 232000,
+            "start_ms": 0
+        }
+
+### GET
+
++ Response 200
+
+    [Track][]
+
+
+## Collection [/media/{+dirpath}]
+
++ Parameters
+    + dirpath (string, `path/to`) ... path to subdirectory or other collection, relative to *basedir*
 
 + Model
 
@@ -126,18 +154,30 @@ Track Attributes:
             "_url": "/media/path",
             "name": "path",
             "count": {
-                "children": 0,
+                "children": 1,
                 "tracks": 1
             },
-            "children": [],
+            "children": [
+                {
+                    "_id": "456",
+                    "_cls": "Collection",
+                    "_url": "/media/path/to",
+                    "name": "to",
+                    "path": "/path/to"
+                    "count": {
+                        "children": 0,
+                        "tracks": 1
+                    },
+                }
+            ],
             "tracks":  [
                     {
-                        "_id": "456",
-                        "_url": "/media/path/track.mp3",
-                        "_cls": "Track",
+                        "_id": "654",
+                        "_url": "/media/path/other_track.mp3",
+                        "_cls": "Other Track",
                         "format": "mp3",
                         "name": "Track",
-                        "path": "/path/track.mp3"
+                        "path": "/path/other_track.mp3"
                     }
             ]
         }
@@ -146,10 +186,10 @@ Track Attributes:
 
 + Response 200
 
-    [Media][]
+    [Collection][]
 
 
-# Group Search
+# Group Search Media
 
 Searching for text strings returns a Media group that contains matching groups and single tracks.
 
