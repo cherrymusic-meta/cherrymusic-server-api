@@ -343,12 +343,12 @@ Attributes:
 
 + Request
 
-    {
-        "tracks": [
-            {"_id": "456"},
-            {"_id": "457"}
-        ]
-    }
+        {
+            "tracks": [
+                {"_id": "456"},
+                {"_id": "457"}
+            ]
+        }
 
 + Response 200
 
@@ -471,7 +471,7 @@ Session management; login and logout.
             "expires_at": "2064-01-01T00:00:00Z",
             "owner": {
                 "_id": "1",
-                "_cls": "User"
+                "_cls": "User",
                 "_url": "/users/angus",
                 "name": "angus"
             },
@@ -531,10 +531,26 @@ Session management; login and logout.
 
     [Session][]
 
-### List sessions [GET]
+### List [GET]
 
-[TODO] &hellip;
++ Response 200
 
+        {
+            "1234567890": {
+                "_id": "1234567890",
+                "_cls": "Session",
+                "_url": "/sessions/1234567890",
+                "created_at": "2014-10-05T07:15:00Z",
+                "modified_at": "2014-10-05T07:15:00Z",
+                "expires_at": "2064-01-01T00:00:00Z",
+                "owner": {
+                    "_id": "1",
+                    "_cls": "User",
+                    "_url": "/users/angus",
+                    "name": "angus"
+                }
+            }
+        }
 
 
 # Group User Settings
