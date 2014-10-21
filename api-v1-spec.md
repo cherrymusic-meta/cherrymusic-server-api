@@ -10,11 +10,11 @@ FORMAT: 1A
 - [Group Search Media](#group-search-media)
 - [Search](#/search{?query})
 - [Group Admin](#group-admin)
-- [Group User](#group-user)
-- [Group Playlist](#group-playlist)
-- [Group Art](#group-art)
-- [Group Session](#group-session)
-- [Group Settings](#group-settings)
+- [Group Users](#group-users)
+- [Group Playlists](#group-playlists)
+- [Group Album Art](#group-album-art)
+- [Group Session Management](#group-session-management)
+- [Group User Settings](#group-user-settings)
 - [Group Stats](#group-stats)
 - [Group Download](#group-download)
 - [Group Tasks](#group-tasks)
@@ -227,7 +227,7 @@ The `admin` resource collection is a separate namespace which duplicates the oth
 Access is restricted to users with the `"admin"` role.
 
 
-# Group User
+# Group Users
 
 Resource representation of CherryMusic users.
 
@@ -283,9 +283,19 @@ Attributes:
 
 
 
-# Group Playlist
+# Group Playlists
 
-## Playlist [/playlists/{name}/{user}]
+## Playlist [/playlists/{name}/by/{user}]
+
+Attributes:
+
+- name (string)
+- public (`true | false`)
+- owner (User)
+- count.tracks (number)
+- tracks
+- _created_at (timestamp)
+- _modified_at (timestamp)
 
 + Parameters
     + name (required, string, `foo+songs`)
@@ -297,6 +307,8 @@ Attributes:
             "_id": 123,
             "_cls": "Playlist",
             "_url": "/playlists/foo+songs/angus",
+            "_created_at": "",
+            "_modified_at": "",
             "name": "foo songs",
             "public": true,
             "owner": {
@@ -320,6 +332,28 @@ Attributes:
                     }
             ]
         }
+
+### Read [GET]
+
++ Response 200
+
+    [Playlist][]
+
+### Update [PUT]
+
++ Request
+
+    {
+        "tracks": [
+            {"_id": "456"},
+            {"_id": "457"}
+        ]
+    }
+
++ Response 200
+
+    [Playlist][]
+
 
 ## Playlists Collection [/playlists]
 
@@ -352,22 +386,28 @@ Attributes:
             "tracks": []
         }
 
-### All playlists [GET]
+### List [GET]
 
 + Response 200
 
     [Playlists Collection][]
 
-### Add new playlist [POST]
+### Create [POST]
 
 + Request
 
-    [Playlist][]
+        {
+            "name": "Bell Bottom Blues",
+            "owner": {"_id": "1"},
+            "tracks": [
+                {"_id": "345"}
+            ]
+        }
 
 + Response 201
 
 
-# Group Art
+# Group Album Art
 
 Search and set media art.
 
@@ -413,11 +453,12 @@ Search and set media art.
             "link": "/art/eW91cl9tb20="
         }
 
-# Group Session
+
+# Group Session Management
 
 Session management; login and logout.
 
-## Session [/sessions/{_id}]
+## Session [/sessions/{id}]
 
 + Model (application/json)
 
@@ -496,11 +537,11 @@ Session management; login and logout.
 
 
 
-# Group Settings
+# Group User Settings
 
 Serverside storage for user-specific settings. Settings are simple key/value pairs which are also bound to a context, allowing different client apps to have their own settings namespace.
 
-## User Settings [/settings/{context}/{user}]
+## Settings [/settings/{context}/{user}]
 
 + Parameters
     + context (string, `common`) ... `common` or client app UUID
@@ -533,7 +574,7 @@ Serverside storage for user-specific settings. Settings are simple key/value pai
 
 + Response 200
 
-    [User Settings][]
+    [Settings][]
 
 ### Change single setting [PUT]
 
@@ -547,7 +588,7 @@ Serverside storage for user-specific settings. Settings are simple key/value pai
 
 + Response 200
 
-    [User Settings][]
+    [Settings][]
 
 
 # Group Stats
