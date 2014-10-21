@@ -226,6 +226,58 @@ The `admin` resource collection is a separate namespace which duplicates the oth
 
 Access is restricted to users with the `"admin"` role.
 
+## List Roles [/admin/roles{?name,user}]
++ Parameters
+    + name (string, `admin`) ... role name
+        + Values
+            + `admin`
+            + `downloader`
+    + user (optional, string, `angus`) ... user name
+
++ Model
+
+        {
+            "admin": [{"name": "admin", "user": "angus"}],
+            "downloader": []
+        }
+
+### GET
+
++ Response 200
+
+    [List Roles][]
+
+
+## Grant Role [/admin/roles]
+
+### POST
+
++ Request
+
+        {"name": "admin", "user": "angus"}
+
++ Response 200
+
+## Revoke Role [/admin/roles/{name}/user/{user}]
+
++ Parameters
+    + name (string, `admin`)
+        + Values
+            + `admin`
+            + `downloader`
+    + user (string, `angus`)
+
++ Model
+
+        {
+            "role": "admin",
+            "user": "angus"
+        }
+
+### DELETE
+
++ Response 200
+
 
 # Group Users
 
@@ -278,9 +330,6 @@ Attributes:
         }
 
 + Response 201
-
-
-
 
 
 # Group Playlists
